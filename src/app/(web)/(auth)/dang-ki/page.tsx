@@ -2,7 +2,6 @@
 import { DatePickerInput } from '@mantine/dates';
 
 import { User } from '@/app/Entity/UserEntity';
-import fetcher from '@/app/lib/utils/func-handler/fetcher';
 import { NotifyError, NotifySuccess } from '@/app/lib/utils/func-handler/toast';
 import { userSchema } from '@/app/lib/utils/zod/zodShcemaForm';
 import { api } from '@/trpc/react';
@@ -12,15 +11,13 @@ import { Gender, UserLevel, UserRole } from '@prisma/client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import useSWR from 'swr';
 
 export default function Page() {
   const router = useRouter();
-  const { data: provinces } = useSWR<any>(`https://api.vnappmob.com/api/v2/province/`, fetcher);
+  // const { data: provinces } = useSWR<any>(`https://api.vnappmob.com/api/v2/province/`, fetcher);
 
   const {
     control,
-    getValues,
     handleSubmit,
     formState: { errors, isSubmitting }
   } = useForm({
@@ -163,10 +160,16 @@ export default function Page() {
                   render={({ field }) => (
                     <Select
                       placeholder=' Chọn tỉnh thành'
-                      data={provinces?.results?.map((item: any) => ({
-                        value: item.province_id,
-                        label: item.province_name
-                      }))}
+                      data={[
+                        {
+                          value: 'Ha Noi',
+                          label: 'Ha Noi'
+                        },
+                        {
+                          value: 'Hai Phong',
+                          label: 'Hai Phong'
+                        }
+                      ]}
                       nothingFoundMessage='Nothing found...'
                       {...field}
                     />
