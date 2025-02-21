@@ -1,12 +1,11 @@
 'use client';
-import { DatePickerInput } from '@mantine/dates';
-
 import { User } from '@/app/Entity/UserEntity';
 import { NotifyError, NotifySuccess } from '@/app/lib/utils/func-handler/toast';
 import { userSchema } from '@/app/lib/utils/zod/zodShcemaForm';
 import { api } from '@/trpc/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Card, Center, Grid, GridCol, Input, PasswordInput, rem, Select, Text, Title } from '@mantine/core';
+import { DatePickerInput } from '@mantine/dates';
 import { Gender, UserLevel, UserRole } from '@prisma/client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -18,6 +17,7 @@ export default function Page() {
 
   const {
     control,
+    getValues,
     handleSubmit,
     formState: { errors, isSubmitting }
   } = useForm({
@@ -43,7 +43,7 @@ export default function Page() {
 
   const onSubmit: SubmitHandler<User> = async formData => {
     try {
-      if (formData) {
+      if (typeof window !== 'undefined') {
         const result = await mutation.mutateAsync({
           ...formData,
           image: {
@@ -162,12 +162,12 @@ export default function Page() {
                       placeholder=' Chọn tỉnh thành'
                       data={[
                         {
-                          value: 'Ha Noi',
-                          label: 'Ha Noi'
+                          value: 'Hanoi',
+                          label: 'Hanoi'
                         },
                         {
-                          value: 'Hai Phong',
-                          label: 'Hai Phong'
+                          value: 'HCM',
+                          label: 'HCM'
                         }
                       ]}
                       nothingFoundMessage='Nothing found...'
